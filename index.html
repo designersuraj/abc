@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Location Data</title>
+</head>
+<body>
+    <h1>Location Data</h1>
+    <ul id="locations"></ul>
+
+    <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-database.js"></script>
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyDH8UXHxAKZcfFXUEZoiPhSEpCDDx_z3TQ",
+            authDomain: "track-7cca0.firebaseapp.com",
+            databaseURL: "https://track-7cca0-default-rtdb.firebaseio.com",
+            projectId: "track-7cca0",
+            storageBucket: "track-7cca0.appspot.com",
+            messagingSenderId: "229274420453",
+            appId: "1:229274420453:web:33035c306dbfb399c7400c",
+            measurementId: "G-PZJPN1LYT5"
+        };
+
+        const app = firebase.initializeApp(firebaseConfig);
+        const database = firebase.database(app);
+
+        const locationsRef = database.ref('locations');
+        locationsRef.on('value', (snapshot) => {
+            const data = snapshot.val();
+            const list = document.getElementById('locations');
+            list.innerHTML = '';
+
+            for (const userId in data) {
+                const { latitude, longitude } = data[userId];
+                const listItem = document.createElement('li');
+                listItem.textContent = `User ID: ${userId}, Latitude: ${latitude}, Longitude: ${longitude}`;
+                list.appendChild(listItem);
+            }
+        });
+    </script>
+</body>
+</html>
